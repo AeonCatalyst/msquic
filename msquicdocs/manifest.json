@@ -62,30 +62,10 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/CredScan.md",
-      "output": {
-        ".html": {
-          "relative_path": "docs/CredScan.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "docs/Deployment.md",
       "output": {
         ".html": {
           "relative_path": "docs/Deployment.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docs/Development.md",
-      "output": {
-        ".html": {
-          "relative_path": "docs/Development.html"
         }
       },
       "version": ""
@@ -192,16 +172,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/ReceiveBuffer.md",
-      "output": {
-        ".html": {
-          "relative_path": "docs/ReceiveBuffer.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "docs/Release.md",
       "output": {
         ".html": {
@@ -246,16 +216,6 @@
       "output": {
         ".html": {
           "relative_path": "docs/TEST.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docs/TLS.md",
-      "output": {
-        ".html": {
-          "relative_path": "docs/TLS.html"
         }
       },
       "version": ""
@@ -844,11 +804,74 @@
       "type": "Toc",
       "source_relative_path": "docs/api/toc.yml",
       "output": {
-        ".json": {
-          "relative_path": "docs/api/toc.json"
-        },
         ".html": {
           "relative_path": "docs/api/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contrib/CredScan.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contrib/CredScan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contrib/Development.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contrib/Development.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contrib/ReceiveBuffer.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contrib/ReceiveBuffer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contrib/ReleaseGuide.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contrib/ReleaseGuide.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/contrib/TLS.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contrib/TLS.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/contrib/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/contrib/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/contrib/toc.json"
         }
       },
       "version": ""
@@ -867,11 +890,11 @@
       "type": "Toc",
       "source_relative_path": "docs/experimental/toc.yml",
       "output": {
-        ".json": {
-          "relative_path": "docs/experimental/toc.json"
-        },
         ".html": {
           "relative_path": "docs/experimental/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/experimental/toc.json"
         }
       },
       "version": ""
@@ -1070,11 +1093,11 @@
       "type": "Toc",
       "source_relative_path": "docs/toc.yml",
       "output": {
-        ".json": {
-          "relative_path": "docs/toc.json"
-        },
         ".html": {
           "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
         }
       },
       "version": ""
@@ -1085,6 +1108,246 @@
       "output": {
         ".html": {
           "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-1.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-2.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-3.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-4.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-4.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-5.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-5.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-6.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-6.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-7.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-7.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/cpu-debug-8.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/cpu-debug-8.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/icon.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/icon.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/nic-recv-buffers.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/nic-recv-buffers.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/perfmon.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/perfmon.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/ptp-timestamp-config.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/ptp-timestamp-config.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/readme_logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/readme_logo.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/rss-debug-1.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/rss-debug-1.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/rss-debug-2.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/rss-debug-2.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/rss-debug-3.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/rss-debug-3.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/tat.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/tat.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/tx-blocked-state.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/tx-blocked-state.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/docs/images/udp-perf-counters.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/docs/images/udp-perf-counters.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/src/plugins/trace/images/flame.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/src/plugins/trace/images/flame.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/src/plugins/trace/images/quic_network.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/src/plugins/trace/images/quic_network.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/src/plugins/trace/images/wpa.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/src/plugins/trace/images/wpa.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/src/plugins/trace/images/wpa_perf_flamegraph.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/src/plugins/trace/images/wpa_perf_flamegraph.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "msquicdocs/src/plugins/trace/images/wpa_perf_line.png",
+      "output": {
+        "resource": {
+          "relative_path": "msquicdocs/src/plugins/trace/images/wpa_perf_line.png"
         }
       },
       "version": ""
@@ -1183,11 +1446,11 @@
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {
-        ".json": {
-          "relative_path": "toc.json"
-        },
         ".html": {
           "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
         }
       },
       "version": ""
