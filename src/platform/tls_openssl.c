@@ -329,9 +329,11 @@ static int QuicTlsSend(SSL *s, const unsigned char *Buf,
         (uint32_t)AData->Level);
 
     //
-    // Make sure that we don't violate handshake data lengths
+    // Cap the buffer at 0x8000, the largest power of two that fits a uint16_t,
+    // so the doubling growth below cannot overflow.
     //
-    if (BufLen + TlsState->BufferLength > 0xF000) {
+    size_t RequiredBufferLength = BufLen + TlsState->BufferLength;
+    if (RequiredBufferLength > 0x8000) {
         QuicTraceEvent(
             TlsError,
             "[ tls][%p] ERROR, %s.",
@@ -341,13 +343,13 @@ static int QuicTlsSend(SSL *s, const unsigned char *Buf,
         return -1;
     }
 
-    if (BufLen + TlsState->BufferLength > (size_t)TlsState->BufferAllocLength) {
+    if (RequiredBufferLength > (size_t)TlsState->BufferAllocLength) {
         //
-        // Double the allocated Buffer length until there's enough room for the
+        // Double the allocated buffer length until there's enough room for the
         // new data.
-        // 
+        //
         uint16_t NewBufferAllocLength = TlsState->BufferAllocLength;
-        while (BufLen + TlsState->BufferLength > (size_t)NewBufferAllocLength) {
+        while (RequiredBufferLength > (size_t)NewBufferAllocLength) {
             NewBufferAllocLength <<= 1;
         }
 
@@ -2839,7 +2841,6 @@ static RECORD_ENTRY *MakeNewRecord(const uint8_t *Record, size_t RecLen, SSL *Ss
 //       unless they appear first in the datagram.
 //
 // @warning Assumes the record buffer contains valid TLS handshake formatting.
-// @warning The function asserts that the message type is <= 20.
 //
 static int SplitAddRecord(RECORD_ENTRY *Entry, size_t *Consumed)
 {
@@ -2869,43 +2870,28 @@ static int SplitAddRecord(RECORD_ENTRY *Entry, size_t *Consumed)
         message_size = htonl(message_size) & 0x00ffffff;
 
         //
-        //make sure our message type is valid
-        //
-        if (message_type > SSL3_MT_FINISHED) {
-            //
-            // This is not a real handshake record
-            //
-            CXPLAT_FREE(Entry, QUIC_POOL_TLS_RECORD_ENTRY);
-            return -1;
-        }
-
-
-        //
-        // Stop processing if this is a handshake finished record
-        //
-        if (message_type == SSL3_MT_FINISHED) {
-            //
-            // Trim the buffer so we end on a record boundary
-            // Everything after the HandShakeFinished record
-            // Is just padding
-            //
-            Entry->RecLen = total_message_size + message_size + 4;
-            goto insert_now;
-        }
-
-        //
-        // If this message is larger then the total record length
-        // then we need to create an Incomplete record as its remainder
-        // is in the next datagram
-        // also, if this is an epoch key change message (8 is EncryptedExtensions)
-        // then we need to split it as rcv_rec expects that
-        // Note we only need to force the split if the epoch change
-        // isn't the first message in this record
+        // If this message extends past the end of the record, its remainder
+        // is in a later datagram, so it is incomplete.
         //
         if (total_message_size + message_size + 4 > Entry->RecLen) {
             Incomplete = 1;
         }
 
+        //
+        // A complete handshake FINISHED ends the flight, so trim the record
+        // to its end and ignore any padding that follows. An incomplete one
+        // is handled like any other incomplete message below.
+        //
+        if (message_type == SSL3_MT_FINISHED && Incomplete == 0) {
+            Entry->RecLen = total_message_size + message_size + 4;
+            goto insert_now;
+        }
+
+        //
+        // An epoch key change message (8 is EncryptedExtensions) must be
+        // split as rcv_rec expects it isolated, but only if it isn't the
+        // first message in this record.
+        //
         if ((message_type == 8) && (total_message_size != 0)) {
             force_split = 1;
         }
@@ -3167,10 +3153,18 @@ CxPlatTlsProcessData(
                                  *BufferLength, &Consumed);
         if (MRet == 0) {
             //
-            // There was an allocation failure
-            // Indicate we consumed nothing
+            // There was a record processing failure.
+            // Indicate we consumed nothing and stop the handshake path.
             //
+            QuicTraceEvent(
+                TlsError,
+                "[ tls][%p] ERROR, %s.",
+                TlsContext->Connection,
+                "ProcessNewMessage failed");
+            TlsContext->ResultFlags |= CXPLAT_TLS_RESULT_ERROR;
+            State->AlertCode = CXPLAT_TLS_ALERT_CODE_INTERNAL_ERROR;
             Consumed = 0;
+            goto Exit;
         }
         *BufferLength = *BufferLength - (uint32_t)Consumed;
     }
