@@ -191,6 +191,14 @@ typedef union QUIC_CONNECTION_STATE {
         //
         BOOLEAN DelayedApplicationError : 1;
 
+        //
+        // Indicates the client has successfully decrypted at least one
+        // authenticated (non-VN, non-Retry) packet. Per RFC 9000 §6.2,
+        // a client MUST discard any Version Negotiation packet after
+        // receiving an authenticated packet.
+        //
+        BOOLEAN GotAuthenticatedPacket : 1;
+
 #ifdef CxPlatVerifierEnabledByAddr
         //
         // The calling app is being verified (app or driver verifier).
@@ -1273,6 +1281,16 @@ _IRQL_requires_max_(PASSIVE_LEVEL)
 QUIC_CID_LIST_ENTRY*
 QuicConnGetUnusedDestCid(
     _In_ const QUIC_CONNECTION* Connection
+    );
+
+//
+// Retires a specific destination connection ID.
+//
+_IRQL_requires_max_(PASSIVE_LEVEL)
+void
+QuicConnRetireCid(
+    _In_ QUIC_CONNECTION* Connection,
+    _In_ QUIC_CID_LIST_ENTRY* DestCid
     );
 
 //

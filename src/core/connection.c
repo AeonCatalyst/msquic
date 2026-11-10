@@ -971,12 +971,12 @@ QuicConnGenerateNewSourceCid(
     return SourceCid;
 }
 
-uint8_t
+uint32_t
 QuicConnSourceCidsCount(
     _In_ const QUIC_CONNECTION* Connection
     )
 {
-    uint8_t Count = 0;
+    uint32_t Count = 0;
     const CXPLAT_SLIST_ENTRY* Entry = Connection->SourceCids.Next;
     while (Entry != NULL) {
         ++Count;
@@ -1009,7 +1009,7 @@ QuicConnGenerateNewSourceCids(
     // limit). Otherwise, just generate whatever number we need to hit the
     // limit.
     //
-    uint8_t NewCidCount;
+    uint32_t NewCidCount;
     if (ReplaceExistingCids) {
         NewCidCount = Connection->SourceCidLimit;
         CXPLAT_SLIST_ENTRY* Entry = Connection->SourceCids.Next;
@@ -1032,7 +1032,7 @@ QuicConnGenerateNewSourceCids(
             return;
         }
     } else {
-        uint8_t CurrentCidCount = QuicConnSourceCidsCount(Connection);
+        uint32_t CurrentCidCount = QuicConnSourceCidsCount(Connection);
         CXPLAT_DBG_ASSERT(CurrentCidCount <= Connection->SourceCidLimit);
         if (CurrentCidCount < Connection->SourceCidLimit) {
             NewCidCount = Connection->SourceCidLimit - CurrentCidCount;
@@ -1041,7 +1041,7 @@ QuicConnGenerateNewSourceCids(
         }
     }
 
-    for (uint8_t i = 0; i < NewCidCount; ++i) {
+    for (uint32_t i = 0; i < NewCidCount; ++i) {
         if (QuicConnGenerateNewSourceCid(Connection, FALSE) == NULL) {
             break;
         }
@@ -2042,6 +2042,13 @@ QuicConnRestart(
 
     for (uint32_t i = 0; i < ARRAYSIZE(Connection->Packets); ++i) {
         CXPLAT_DBG_ASSERT(Connection->Packets[i] != NULL);
+        if (Connection->Packets[i] == NULL) {
+            QuicConnFatalError(
+                Connection,
+                QUIC_STATUS_INTERNAL_ERROR,
+                "NULL packet space in QuicConnRestart");
+            return;
+        }
         QuicPacketSpaceReset(Connection->Packets[i]);
     }
 
@@ -3549,6 +3556,13 @@ QuicConnRecvVerNeg(
         }
     }
 
+    //
+    // The VN packet is valid and doesn't list our current version.
+    // Mark version negotiation as having occurred so we don't
+    // accept another VN packet.
+    //
+    Connection->Stats.VersionNegotiation = TRUE;
+
     if (SupportedVersion == 0) {
         //
         // No match! Connection failure.
@@ -3879,11 +3893,14 @@ QuicConnRecvHeader(
                 //
             } else if (QuicConnIsClient(Connection) &&
                 Packet->Invariant->LONG_HDR.Version == QUIC_VERSION_VER_NEG &&
-                !Connection->Stats.VersionNegotiation) {
+                !Connection->Stats.VersionNegotiation &&
+                !Connection->State.GotAuthenticatedPacket) {
                 //
-                // Version negotiation packet received.
+                // Version negotiation packet received. Per RFC 9000 §6.2,
+                // a client MUST discard any VN packet if it has received and
+                // successfully processed any other packet, including an
+                // earlier VN packet.
                 //
-                Connection->Stats.VersionNegotiation = TRUE;
                 QuicConnRecvVerNeg(Connection, Packet);
 
                 return FALSE;
@@ -4344,6 +4361,7 @@ QuicConnRecvDecryptAndAuthenticate(
     }
 
     Connection->Stats.Recv.ValidPackets++;
+    Connection->State.GotAuthenticatedPacket = TRUE;
 
     //
     // Validate the header's reserved bits now that the packet has been
